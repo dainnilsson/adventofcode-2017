@@ -5,34 +5,17 @@ data = int(input().strip())
 
 
 def pos(index):
-    s = int(sqrt(index-1))
-    if s % 2 == 0:
-        s -= 1
-    i = index - s*s - 1
-    if i < s:
-        return ((s+1)//2, i-s//2)
-    i -= s
-    if i < s + 2:
-        return (1+s//2-i, s//2+1)
-    i -= (s+2)
-    if i < s:
-        return (-s//2, s//2-i)
-    i -= s
-    return (i-s//2-1, -s//2)
+    r = int(sqrt(index-1) + 1) // 2
+    d = 2*r - 1
+    i = index - d*d - 1
+    return (r, i-r+1) if i < d else (r-i+d, r) if i < 2*d + 2 else \
+        (-r, r-i-1+2*d+2) if i < 3*d + 2 else (i-r-3*d-2, -r)
 
 
 print(sum(abs(c) for c in pos(data)))
 
-mem = {(0, 0): 1}
-largest = 1
-i = 2
-while largest <= data:
-    x, y = pos(i)
-    s = 0
-    for a in range(-1, 2):
-        for b in range(-1, 2):
-            adj = (x+a, y+b)
-            s += mem.get(adj, 0)
-    mem[(x, y)] = largest = s
-    i += 1
-print(largest)
+m, s, i = {(0, 0): 1}, 1, 2
+while s <= data:
+    (x, y), i = pos(i), i + 1
+    m[x, y] = s = sum(m.get((x + j % 3 - 1, y + j//3), 0) for j in range(-3, 6))
+print(s)
