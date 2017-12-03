@@ -1,5 +1,7 @@
 # Advent of Code 2017
-Solutions for Advent of Code 2017 (http://adventofcode.com/2017) in Python (3).
+Solutions for Advent of Code 2017 (http://adventofcode.com/2017) in Python 3.
+Solutions are for the most part optimized for brevity, at the cost of readability (for funsies).
+
 
 ## Requirements
 Python 3
