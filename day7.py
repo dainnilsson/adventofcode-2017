@@ -4,14 +4,10 @@ import sys, re
 
 d = [x.strip() for x in sys.stdin.readlines()]
 
-t = dict((m[0], (int(m[1]), m[3].split(', ') if m[3] else [], []))
+t = dict((m[0], (int(m[1]), m[3].split(', ') if m[3] else []))
          for m in [re.match('(\w+) \((\d+)\)( -> ((\w+, )*\w+))?', l).groups()
                    for l in d])
-
-for n in t:
-    for x in t[n][1]:
-        t[x][2].append(n)
-n = sorted(t, key=lambda k: len(t[k][2]))[0]
+n = (set(t) - set(c for n in t for c in t[n][1])).pop()
 print(n)
 
 w = lambda n: t[n][0] + sum(w(c) for c in t[n][1])
