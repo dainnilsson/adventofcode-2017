@@ -12,25 +12,6 @@ def v(mem, x):
         return mem.get(x, 0)
 
 
-m = {}
-i = 0
-cmul = 0
-while 0 <= i < len(d):
-    ins, a, b = d[i]
-    b = v(m, b)
-    if ins == 'set':
-        m[a] = b
-    elif ins == 'sub':
-        m[a] = v(m, a) - b
-    elif ins == 'mul':
-        m[a] = v(m, a) * b
-        cmul += 1
-    elif v(m, a):
-        i += b - 1
-    i += 1
-
-print(cmul)
-
 def is_prime(n):
     if n % 2 == 0:
         return False
@@ -39,4 +20,34 @@ def is_prime(n):
             return False
     return True
 
-print(sum(1 for b in range(106500, 123501, 17) if not is_prime(b)))
+
+def tick(i):
+    ins, a, b = d[i]
+    b = v(m, b)
+    if ins == 'set':
+        m[a] = b
+    elif ins == 'sub':
+        m[a] = v(m, a) - b
+    elif ins == 'mul':
+        m[a] = v(m, a) * b
+    elif ins == 'jnp':
+        if not is_prime(v(m, a)):
+            i += b - 1
+    elif v(m, a):
+        i += b - 1
+    return i + 1
+
+
+m, i, mul = {}, 0, 0
+while 0 <= i < len(d):
+    if d[i][0] == 'mul':
+        mul += 1
+    i = tick(i)
+print(mul)
+
+d[8] = 'jnp b 17'.split()
+d[9] = 'jnz 1 17'.split()
+m, i = {'a': 1}, 0
+while 0 <= i < len(d):
+    i = tick(i)
+print(m['h'])
